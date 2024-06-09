@@ -1,0 +1,53 @@
+:root {
+    color-scheme: light dark;
+
+    --color-white: 255, 255, 255;
+
+    --color-backdrop: 0, 0, 0, 0.4;
+
+    --color-surface: 255, 255, 255;
+    --color-surface-elevated: 242, 242, 242;
+
+    --color-text-primary: 0, 0, 0;
+    --color-text-secondary: 0, 0, 0, 0.6;
+    --color-text-tertiary: 0, 0, 0, 0.36;
+    --color-text-disabled: 0, 0, 0, 0.18;
+
+    --color-fill: 127, 127, 127, 0.24;
+    --color-fill-dark: 127, 127, 127, 0.3;
+    --color-fill-red: 184, 52, 52, 0.24;
+
+    --color-accent-light: 250, 110, 80;
+    --color-accent: 237, 78, 45;
+    --color-accent-dark: 219, 67, 35;
+
+    --color-red: 207, 34, 46;
+}
+
+:root.dark {
+    --color-backdrop: 0, 0, 0, 0.6;
+
+    --color-surface: 0, 0, 0;
+    --color-surface-elevated: 28, 28, 28;
+
+    --color-text-primary: 255, 255, 255;
+    --color-text-secondary: 255, 255, 255, 0.6;
+    --color-text-tertiary: 255, 255, 255, 0.36;
+    --color-text-disabled: 255, 255, 255, 0.18;
+
+    --color-fill: 127, 127, 127, 0.3;
+    --color-fill-dark: 127, 127, 127, 0.36;
+    --color-fill-red: 184, 108, 108, 0.3;
+
+    --color-accent-light: 241, 119, 91;
+    --color-accent: 225, 83, 55;
+    --color-accent-dark: 207, 75, 48;
+
+    --color-text-red: 194, 46, 55;
+}
+
+body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background-color: rgb(var(--color-surface));
+    color: rgb(var(--color-text-secondary));
+}
