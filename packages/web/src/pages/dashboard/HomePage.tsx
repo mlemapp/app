@@ -1,7 +1,16 @@
-import { useKindeAuth } from '@kinde-oss/kinde-auth-react';
+import { signOut } from 'firebase/auth';
+
+import { auth } from '@/firebase';
 
 export default function HomePage() {
-    const { user } = useKindeAuth();
+    function onClick() {
+        signOut(auth);
+    }
 
-    return <div>Home page: {user!.email}</div>;
+    return (
+        <div>
+            Home page
+            <button onClick={onClick}>Sign out</button>
+        </div>
+    );
 }

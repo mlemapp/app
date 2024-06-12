@@ -1,39 +1,34 @@
-import { KindeProvider, useKindeAuth } from '@kinde-oss/kinde-auth-react';
+import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import backend from 'i18next-http-backend';
 
-import HomePage from './pages/dashboard/HomePage';
+import Spinner from './components/ui/Spinner';
+import routes from './routes';
 
-const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <HomePage />,
-    },
-]);
+const queryClient = new QueryClient();
+
+i18n.use(initReactI18next)
+    .use(backend)
+    .init({
+        lng: 'en',
+        interpolation: {
+            escapeValue: false,
+        },
+    });
+
+const router = createBrowserRouter(routes);
 
 export function App() {
     return (
-        <KindeProvider
-            clientId={import.meta.env.VITE_KINDE_CLIENT_ID}
-            domain={import.meta.env.VITE_KINDE_DOMAIN}
-            logoutUri={import.meta.env.VITE_KINDE_LOGOUT_URL}
-            redirectUri={import.meta.env.VITE_KINDE_REDIRECT_URL}
-        >
-            <InnerApp />
-        </KindeProvider>
+        <div className="flex w-dvw h-dvh px-4">
+            <QueryClientProvider client={queryClient}>
+                <React.Suspense fallback={<Spinner centered />}>
+                    <RouterProvider router={router} />
+                </React.Suspense>
+            </QueryClientProvider>
+        </div>
     );
-}
-
-function InnerApp() {
-    const { isLoading, isAuthenticated, login } = useKindeAuth();
-
-    if (isLoading) {
-        return 'Loading...';
-    }
-
-    if (!isAuthenticated) {
-        login();
-        return null;
-    }
-
-    return <RouterProvider router={router} />;
 }
