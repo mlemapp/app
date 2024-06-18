@@ -9,14 +9,15 @@ const pkg = require('./package.json');
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react(), dts({ rollupTypes: true })],
+    plugins: [
+        react({
+            jsxImportSource: '@emotion/react',
+        }),
+        dts({ rollupTypes: true }),
+    ],
     build: {
         lib: {
-            entry: [
-                resolve(__dirname, 'src/index.ts'),
-                resolve(__dirname, 'src/tailwind-plugin.ts'),
-                resolve(__dirname, 'src/icons.ts'),
-            ],
+            entry: [resolve(__dirname, 'src/index.ts')],
             formats: ['cjs', 'es'],
         },
         rollupOptions: {

@@ -1,50 +1,115 @@
 import React from 'react';
-import { twMerge } from 'tailwind-merge';
+import { css } from '@emotion/react';
 
-export type InputProps = React.ComponentPropsWithRef<'input'> & {
-    startDecorator?: React.ReactNode;
-    endDecorator?: React.ReactNode;
-    error?: boolean;
+import tks from './tokens';
+import { OverrideProps } from './types';
+
+export type InputProps = OverrideProps<
+    {
+        error?: boolean;
+        disabled?: boolean;
+        startDecorator?: React.ReactNode;
+        endDecorator?: React.ReactNode;
+        size?: 'small' | 'medium' | 'large';
+    },
+    'input'
+>;
+
+const rootStyles = {
+    base: css({
+        display: 'flex',
+        alignItems: 'center',
+        gap: tks.spaces[150],
+        backgroundColor: tks.colors.bg.input.default,
+        borderColor: tks.colors.border.input,
+        borderWidth: 1,
+        borderRadius: tks.borderRadii.md,
+        color: tks.colors.text.default,
+        transition: 'background 0.1s ease-out',
+
+        '&:focus-within': {
+            backgroundColor: tks.colors.bg.input.active,
+            borderColor: tks.colors.transparent,
+            outlineStyle: 'solid',
+            outlineWidth: 2,
+            outlineColor: tks.colors.border.focused,
+        },
+    }),
+
+    small: css({
+        borderRadius: tks.borderRadii.sm,
+        fontSize: tks.fontSizes.sm,
+        gap: tks.spaces[100],
+        paddingInline: tks.spaces[150],
+        paddingBlock: tks.spaces[75],
+    }),
+
+    medium: css({
+        paddingInline: tks.spaces[200],
+        paddingBlock: tks.spaces[100],
+    }),
+
+    large: css({
+        paddingInline: tks.spaces[200],
+        paddingBlock: tks.spaces[150],
+    }),
+
+    error: css({
+        borderColor: tks.colors.border.danger,
+    }),
+
+    disabled: css({
+        backgroundColor: tks.colors.bg.disabled,
+        color: tks.colors.text.disabled,
+        borderColor: tks.colors.border.disabled,
+    }),
+
+    nonDisabled: css({
+        '&:hover': {
+            backgroundColor: tks.colors.bg.input.hovered,
+        },
+    }),
 };
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
-    { disabled, startDecorator, endDecorator, className, error, onFocus, onBlur, ...others },
+const inputStyles = {
+    base: css({
+        flex: 1,
+        backgroundColor: tks.colors.transparent,
+        outline: 'none',
+        minWidth: 0,
+
+        '&::placeholder': {
+            color: tks.colors.text.subtler,
+        },
+    }),
+
+    disabled: css({
+        '&::placeholder': {
+            color: tks.colors.text.disabled,
+        },
+    }),
+};
+
+export default React.forwardRef<HTMLInputElement, InputProps>(function Input(
+    { disabled, error, startDecorator, endDecorator, className, size = 'medium', ...others },
     ref,
 ) {
-    const [focused, setFocused] = React.useState(false);
-
-    function handleFocus(e: React.FocusEvent<HTMLInputElement>) {
-        onFocus?.(e);
-        setFocused(true);
-    }
-
-    function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
-        onBlur?.(e);
-        setFocused(false);
-    }
-
-    const isError = !focused && error;
-
     return (
         <div
-            className={twMerge(
-                'flex items-center gap-4 py-2 px-4 rounded-sm focus-within:outline focus-within:outline-2 focus-within:outline-accent',
-                disabled ? 'text-text-disabled' : 'text-text-secondary',
-                isError ? 'bg-fill-red' : 'bg-fill',
-                className,
-            )}
+            css={[
+                rootStyles.base,
+                rootStyles[size],
+                error && rootStyles.error,
+                disabled ? rootStyles.disabled : rootStyles.nonDisabled,
+            ]}
+            className={className}
         >
             {startDecorator && <div>{startDecorator}</div>}
             <input
                 ref={ref}
                 type="text"
                 disabled={disabled}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                aria-invalid={error}
-                className={`bg-transparent min-w-0 flex-1 outline-none ${
-                    disabled ? 'placeholder-text-disabled' : 'placeholder-text-tertiary'
-                }`}
+                css={[inputStyles.base, disabled && inputStyles.disabled]}
                 {...others}
             />
             {endDecorator && <div>{endDecorator}</div>}

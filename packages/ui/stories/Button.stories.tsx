@@ -1,43 +1,36 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { Basket, Check, Trash } from '@phosphor-icons/react';
 
-import { Basket } from './icons';
-import { Button, ButtonProps } from './button';
+import { Button, ButtonProps } from '../src';
 
-type StoryArgs = {
-    size: ButtonProps['size'];
-    variant: ButtonProps['variant'];
-    label: string;
-    disabled: boolean;
-    pending: boolean;
-    capsule: boolean;
+type StoryArgs = ButtonProps & {
     showIcon: boolean;
-    iconOnly: boolean;
     pseudo: boolean;
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'Button',
     argTypes: {
         variant: { table: { disable: true } },
-        size: { options: ['small', 'medium'], control: { type: 'select' } },
+        icon: { table: { disable: true } },
+        size: { options: ['small', 'medium', 'large'], control: { type: 'radio' } },
         iconOnly: { if: { arg: 'showIcon' } },
     },
     args: {
         size: 'medium',
-        disabled: false,
-        pending: false,
         capsule: false,
         showIcon: false,
         iconOnly: false,
         pseudo: false,
+        disabled: false,
+        pending: false,
     },
 
-    render: ({ variant, label, disabled, pending, capsule, iconOnly, showIcon, pseudo, size }) => (
+    render: ({ variant, label, capsule, iconOnly, icon, showIcon, pseudo, size, disabled, pending }) => (
         <Button
             as={pseudo ? 'div' : 'button'}
             className={pseudo ? 'inline-flex' : ''}
             variant={variant}
-            icon={showIcon ? Basket : undefined}
+            icon={showIcon ? icon : undefined}
             label={label}
             disabled={disabled}
             pending={pending}
@@ -50,23 +43,26 @@ const meta: Meta<StoryArgs> = {
 
 export default meta;
 
-export const Soft: StoryObj<StoryArgs> = {
+export const Default: StoryObj<StoryArgs> = {
     args: {
-        label: 'Soft button',
-        variant: 'soft',
+        label: 'Apply settings',
+        icon: Check,
+        variant: 'default',
     },
 };
 
 export const Danger: StoryObj<StoryArgs> = {
     args: {
-        label: 'Danger button',
+        label: 'Delete menu',
+        icon: Trash,
         variant: 'danger',
     },
 };
 
 export const Prominent: StoryObj<StoryArgs> = {
     args: {
-        label: 'Prominent button',
+        label: 'Add to cart',
+        icon: Basket,
         variant: 'prominent',
     },
 };

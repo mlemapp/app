@@ -1,16 +1,13 @@
 import React from 'react';
 import { Preview } from '@storybook/react';
 
-import { ColorSchemeProvider, useColorScheme } from '../src/color-scheme';
+import { setColorMode } from '../src';
 
-import './main.css';
 import '../src/main.css';
 
-function ColorSchemeSetter({ globals }: { globals: any }) {
-    const [, setColorScheme] = useColorScheme();
-
+function ColorModeSetter({ globals }: { globals: any }) {
     React.useEffect(() => {
-        setColorScheme(globals.colorScheme);
+        setColorMode(globals.colorScheme);
     }, [globals.colorScheme]);
 
     return null;
@@ -19,10 +16,10 @@ function ColorSchemeSetter({ globals }: { globals: any }) {
 const preview: Preview = {
     decorators: [
         (Story, { globals }) => (
-            <ColorSchemeProvider>
-                <ColorSchemeSetter globals={globals} />
+            <React.Fragment>
+                <ColorModeSetter globals={globals} />
                 <Story />
-            </ColorSchemeProvider>
+            </React.Fragment>
         ),
     ],
     parameters: {
