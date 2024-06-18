@@ -1,5 +1,5 @@
 {
-  "name": "mlem-monorepo",
+  "name": "mlem-web",
   "private": true,
   "scripts": {},
   "devDependencies": {
