@@ -1,5 +1,5 @@
 {
-  "name": "@mlemapp/ui-web",
+  "name": "@mlemapp/ui-react",
   "version": "0.0.0",
   "type": "module",
   "files": [
